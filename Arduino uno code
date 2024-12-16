@@ -1,0 +1,29 @@
+#include "SD.h"
+#define SD_ChipSelectPin 10
+#include "TMRpcm.h"
+#include "SPI.h"
+
+TMRpcm tmrpcm;
+
+void setup()
+{
+  tmrpcm.speakerPin = 9;  // Set the speaker pin (adjust based on your wiring)
+  Serial.begin(9600);
+
+  // Initialize SD card
+  if (!SD.begin(SD_ChipSelectPin)) {
+    Serial.println("SD fail");
+    return;
+  }
+  
+  tmrpcm.setVolume(6);  // Set volume (range 0 to 7)
+}
+
+void loop() {
+  // If the audio is not playing, start playing it
+  if (!tmrpcm.isPlaying()) {
+    tmrpcm.play("a.wav");  // Play the audio file "a.wav"
+  }
+
+  // Main loop can be used for additional functionality
+}
